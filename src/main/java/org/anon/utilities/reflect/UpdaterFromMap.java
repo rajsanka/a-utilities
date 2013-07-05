@@ -26,33 +26,60 @@
  * ************************************************************
  * HEADERS
  * ************************************************************
- * File:                org.anon.utilities.test.serial.SimpleListTest
- * Author:              rsankar
+ * File:                org.anon.utilities.reflect.UpdaterFromMap
+ * Author:              vjaasti
  * Revision:            1.0
- * Date:                08-01-2013
+ * Date:                May 15, 2013
  *
  * ************************************************************
  * REVISIONS
  * ************************************************************
- * A simple list test
+ * <Purpose>
  *
  * ************************************************************
  * */
 
-package org.anon.utilities.test.serial;
+package org.anon.utilities.reflect;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
-public class SimpleListTest implements java.io.Serializable
-{
-    private List<SimpleTestObject> _obj;
+import org.anon.utilities.exception.CtxException;
 
-    public SimpleListTest()
+public class UpdaterFromMap extends CreatorFromMap {
+
+	private Map _values;
+
+    public UpdaterFromMap(Map values)
     {
-        _obj = new ArrayList<SimpleTestObject>();
-        for (int i = 0; i < 100; i++)
-            _obj.add(new SimpleTestObject(i));
+    	super(values);
+        _values = values;
     }
-}
+	
 
+    @Override
+    public Object visit(DataContext ctx)
+            throws CtxException
+        {
+    		ctx.setCustom(_values);
+    		if((ctx.field() != null) && (_values.get(ctx.field().getName()) != null ))
+    		{
+    			Object ret = handleFirst(ctx);
+    			if (ret != null) return ret;
+    			if (ctx instanceof ListItemContext)
+    				return handleListItem((ListItemContext)ctx);
+    			else if (ctx instanceof MapItemContext)
+    				return handleMapItem((MapItemContext)ctx);
+
+    			return handleDefault(ctx);
+    		}
+    		
+    		else if(ctx.field() != null) //if not in update map 
+    		{
+    			return null; //return null if not in update Map
+    		}
+    		
+    		
+    		return ctx.traversingObject();
+        }
+}

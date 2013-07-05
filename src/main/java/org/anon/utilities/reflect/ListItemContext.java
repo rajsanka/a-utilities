@@ -51,6 +51,7 @@ public class ListItemContext extends DataContext
     private Field _listField;
     private int _count;
     private Type _parameterizedType;
+    private Class _actualFieldType;
 
     public ListItemContext(Boolean b, Class cls, Type type, Field fld, int cnt)
         throws CtxException
@@ -64,5 +65,7 @@ public class ListItemContext extends DataContext
     public int getCount() { return _count; }
     public Field listField() { return _listField; }
     public Type getGenericType() { return _parameterizedType; }
+    public void setActualFieldType(Class cls) { _actualFieldType = cls; }
+    public Class getActualFieldType() { return _actualFieldType; }
 }
 
