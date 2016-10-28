@@ -96,6 +96,7 @@ public abstract class ExecuteGraphNode
     private Object invokeExecute(Method mthd1, Object obj1, Object[] parms1)
         throws Exception
     {
+        System.out.println("Executing... " + mthd1.getName());
         Object obj = obj1;
         Method mthd = mthd1;
         Object[] parms = parms1;
@@ -107,10 +108,12 @@ public abstract class ExecuteGraphNode
     public Object runGraphNode()
         throws CtxException
     {
-        Object runWith = runtimeObject(_clazz);
-        Object[] parms = parametersFor();
+        Object[] parms = null;
+        Object runWith = null;
         try
         {
+            runWith = runtimeObject(_clazz);
+            parms = parametersFor();
             control().disableSystemExit();
             Object ret = invokeExecute(_method, runWith, parms);
             successOrFailure(ret);
@@ -118,20 +121,28 @@ public abstract class ExecuteGraphNode
         catch (InvocationTargetException ie)
         {
             String msg = ie.getMessage();
+            Throwable e = ie;
             if (ie.getCause() != null)
+            {
                 msg = ie.getCause().getMessage();
-            except().rt(ie, new CtxException.Context("Error: ", msg));
+                e = ie.getCause();
+            }
+            except().rt(e, new CtxException.Context("Error: ", msg + ":" + _method.getName() + ":" + _clazz.getName()));
 
         }
         catch (Exception e)
         {
-            except().rt(e, new CtxException.Context("ExecuteGraphNode.runGraphNode", e.getMessage()));
+            String add = "";
+            for (int i = 0; (parms != null) && (i < parms.length); i++)
+                add += ":" + parms[i];
+            except().rt(e, new CtxException.Context("ExecuteGraphNode.runGraphNode", e.getMessage() + ":" + _method.getName() + ":" + _clazz.getName() + ":" + add));
         }
         finally
         {
             control().enableSystemExit();
             done();
-            _parameters.release(parms);
+            if (parms != null)
+                _parameters.release(parms);
             _context.nodeDone();
         }
         return runWith;

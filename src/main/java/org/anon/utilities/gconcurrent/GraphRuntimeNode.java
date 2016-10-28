@@ -77,7 +77,7 @@ public class GraphRuntimeNode
         {
             for (GraphRuntimeNode nde : _blocking)
             {
-                if (nde.releaseBlock())
+                if ((nde != null) && nde.releaseBlock())
                     unblocked.add(nde);
             }
         }
@@ -98,5 +98,10 @@ public class GraphRuntimeNode
     public Method method() { return _myNode.method(); }
     public Class clazz() { return _myNode.clazz(); }
     public NodeDetails details() { return _myNode.details(); }
+
+    public String toString()
+    {
+        return _myNode.toString();
+    }
 }
 

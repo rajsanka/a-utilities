@@ -67,6 +67,13 @@ public class AssertionService extends ServiceLocator.Service
             except().te(obj, "AssertionService.assertTrue", msg);
     }
 
+    public void assertTrue(boolean cond, Object obj, int cde, String msg)
+        throws CtxException
+    {
+        if (!cond)
+            except().te(obj, "AssertionService.assertTrue", cde, msg, null);
+    }
+
     public void assertFalse(boolean cond, String msg)
         throws CtxException
     {
@@ -120,6 +127,13 @@ public class AssertionService extends ServiceLocator.Service
         }
     }
 
+    public void assertNotNullWithCode(Object chk, int code, String msg)
+        throws CtxException
+    {
+        if (chk == null)
+            except().te(code, msg);
+    }
+
     public void assertNotNull(Object chk, String msg)
         throws CtxException
     {
@@ -132,6 +146,13 @@ public class AssertionService extends ServiceLocator.Service
     {
         if (chk == null)
             except().te(obj, "AssertionService.assertNotNull", msg);
+    }
+
+    public void assertNotNull(Object chk, Object obj, int cde, String msg)
+        throws CtxException
+    {
+        if (chk == null)
+            except().te(obj, "AssertionService.assertNotNull", cde, msg, null);
     }
 
     public void assertNotNull(Object[] objs, String msg)

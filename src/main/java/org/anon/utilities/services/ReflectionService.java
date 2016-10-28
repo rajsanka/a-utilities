@@ -318,6 +318,37 @@ public class ReflectionService extends ServiceLocator.Service
         return vals.toArray();
     }
 
+    public Method[] getAnnotatedMethods(Class cls, String annotatein)
+        throws CtxException
+    {
+        List<Method> ret = new ArrayList<Method>();
+        try
+        {
+            Class annotate = cls.getClassLoader().loadClass(annotatein);
+            System.out.println("Trying to get : " + cls + ":" + annotatein + ":" + cls.getClassLoader() + ":" );
+            Method[] mthds = cls.getDeclaredMethods();
+            for (int i = 0; i < mthds.length; i++)
+            {
+                if (mthds[i].isAnnotationPresent(annotate))
+                {
+                    ret.add(mthds[i]);
+                }
+            }
+
+            if ((cls.getSuperclass() != null) && (!cls.getSuperclass().getName().equals("java.lang.Object")))
+            {
+                Method[] add = getAnnotatedMethods(cls.getSuperclass(), annotatein);
+                for (int i = 0; i < add.length; i++)
+                    ret.add(add[i]);
+            }
+        }
+        catch (Exception e)
+        {
+            except().rt(e, new CtxException.Context("AnnotatedMethods: " + annotatein + ":" + cls.getName(), e.getMessage()));
+        }
+        return ret.toArray(new Method[0]);
+    }
+
     public Method getAnyMethod(Class cls, String mthd, Class ... params)
         throws CtxException
     {
@@ -380,6 +411,46 @@ public class ReflectionService extends ServiceLocator.Service
 
         return null;
  	}
+
+    public Field getAnyFieldWithPath(Class cls, String path)
+        throws CtxException
+    {
+        String[] tokens = path.split("\\.");
+        Class lookin = cls;
+        Field ret = null;
+        for (int i = 0; i < tokens.length; i++)
+        {
+            Field fld = getAnyField(lookin, tokens[i]);
+            if (fld != null)
+            {
+                lookin = fld.getType();
+            }
+            ret = fld;
+        }
+
+        return ret;
+    }
+
+    public Object getAnyFieldValueWithPath(Class cls, Object obj, String path)
+        throws CtxException
+    {
+        String[] tokens = path.split("\\.");
+        Class lookin = cls;
+        Object olookin = obj;
+        Object ret = null;
+        for (int i = 0; i < tokens.length; i++)
+        {
+            Object fobj = getAnyFieldValue(lookin, olookin, tokens[i]);
+            if (fobj != null)
+            {
+                lookin = fobj.getClass();
+                olookin = fobj;
+            }
+            ret = fobj;
+        }
+
+        return ret;
+    }
 
 }
 

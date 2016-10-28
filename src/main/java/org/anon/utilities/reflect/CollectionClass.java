@@ -101,7 +101,7 @@ public class CollectionClass extends CollectionType {
 			except().te(
 					this,
 					"Cannot traverse a class with generic lists " + type + ":"
-							+ pctx);
+							+ pctx + ":" + fld);
 		}
 
 		int sz = ((CVisitor) visit).collectionSize(pctx);

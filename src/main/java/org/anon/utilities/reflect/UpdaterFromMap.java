@@ -60,24 +60,29 @@ public class UpdaterFromMap extends CreatorFromMap {
     @Override
     public Object visit(DataContext ctx)
             throws CtxException
-        {
-    		ctx.setCustom(_values);
-    		if((ctx.field() != null) && (_values.get(ctx.field().getName()) != null ))
-    		{
-    			Object ret = handleFirst(ctx);
-    			if (ret != null) return ret;
-    			if (ctx instanceof ListItemContext)
-    				return handleListItem((ListItemContext)ctx);
-    			else if (ctx instanceof MapItemContext)
-    				return handleMapItem((MapItemContext)ctx);
+    {
+        //ctx.setCustom(_values);
+        Object ret = handleFirst(ctx);
+    	if((ctx.field() != null) && (ctx.getCustom() instanceof Map) && (((Map)ctx.getCustom()).get(ctx.field().getName()) != null )) //dont do anything if field is not in map
+    	{
+    	     
+            
+            if((ctx.field() != null))
+            {
+    	        if (ret != null) return ret;
+    		if (ctx instanceof ListItemContext)
+    		    return handleListItem((ListItemContext)ctx);
+    		else if (ctx instanceof MapItemContext)
+    		    return handleMapItem((MapItemContext)ctx);
 
-    			return handleDefault(ctx);
-    		}
+    		return handleDefault(ctx);
+            }
+    	}
     		
-    		else if(ctx.field() != null) //if not in update map 
-    		{
+    	else if(ctx.field() != null) //if not in update map 
+    	{
     			return null; //return null if not in update Map
-    		}
+    	}
     		
     		
     		return ctx.traversingObject();

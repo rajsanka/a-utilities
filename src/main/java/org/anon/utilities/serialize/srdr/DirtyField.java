@@ -42,10 +42,12 @@
 package org.anon.utilities.serialize.srdr;
 
 import java.util.List;
+import java.lang.reflect.Field;
 
 public class DirtyField
 {
     private String _name;
+    private Field _field;
     private int _index;
     private List<DirtyField> _subFields;
 
@@ -61,6 +63,13 @@ public class DirtyField
         _index = index;
     }
 
+    public DirtyField(String name, int index, Field fld)
+    {
+        _name = name;
+        _index = index;
+        _field = fld;
+    }
+
     public void setDirtySubFields(List<DirtyField> flds)
     {
         _subFields = flds;
@@ -69,6 +78,11 @@ public class DirtyField
     public String getFieldName()
     {
         return _name;
+    }
+
+    public Field getField()
+    {
+        return _field;
     }
 
     public int getArrayIndex()

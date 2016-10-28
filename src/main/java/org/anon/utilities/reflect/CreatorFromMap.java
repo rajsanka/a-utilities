@@ -189,6 +189,29 @@ public class CreatorFromMap implements CVisitor
             	return val;
             }
 
+
+            //For now we are specifically handling this type, just add the ones we want to handle here
+            if ((val != null) && (val.getClass().equals(Integer.class) || val.getClass().equals(Integer.TYPE)) 
+                    && (ctx.fieldType().equals(Long.TYPE) || ctx.fieldType().equals(Long.class)))
+            {
+                Long l = new Long(((Integer)val).intValue());
+                return l.longValue();
+            }
+
+            if ((val != null) && (val.getClass().equals(Integer.class) || val.getClass().equals(Integer.TYPE)) 
+                    && (ctx.fieldType().equals(Double.TYPE) || ctx.fieldType().equals(Double.class)))
+            {
+                Double l = new Double(((Integer)val).doubleValue());
+                return l.doubleValue();
+            }
+
+            if ((val != null) && (val.getClass().equals(Integer.class) || val.getClass().equals(Integer.TYPE)) 
+                    && (ctx.fieldType().equals(Float.TYPE) || ctx.fieldType().equals(Float.class)))
+            {
+                Float l = new Float(((Integer)val).floatValue());
+                return l.floatValue();
+            }
+
             if ((val != null) && ((ctx.fieldType().equals(UUID.class)) || (ctx.fieldType().equals(Date.class))))
             {
                 Object ret = convert().stringToClass(val.toString(), ctx.fieldType());
@@ -203,7 +226,7 @@ public class CreatorFromMap implements CVisitor
 
             if ((val != null) && ((val instanceof Collection) || (val.getClass().isArray())))
             {
-                ctx.setCustom(val);
+                //ctx.setCustom(val);
                 return val;
             }
         }

@@ -26,66 +26,47 @@
  * ************************************************************
  * HEADERS
  * ************************************************************
- * File:                org.anon.utilities.gconcurrent.Graph
+ * File:                org.anon.utilities.exception.StandardExceptionHandler
  * Author:              rsankar
  * Revision:            1.0
- * Date:                16-01-2013
+ * Date:                03-08-2012
  *
  * ************************************************************
  * REVISIONS
  * ************************************************************
- * A graph representation of what should be run
+ * An exception thrown in all anon module
  *
  * ************************************************************
  * */
 
-package org.anon.utilities.gconcurrent;
+package org.anon.utilities.exception;
 
-import java.util.List;
-import java.util.ArrayList;
+import static org.anon.utilities.services.ServiceLocator.*;
 
-import org.anon.utilities.exception.CtxException;
-
-public class Graph
+public class StandardExceptionHandler implements ExceptionHandler
 {
-    private List<GraphNode> _nodes;
+    private CollectedException _exception;
+    private Object _forObject;
+    private int _code;
 
-    public Graph()
+    public StandardExceptionHandler(Object fo, int cde) 
     {
-        _nodes = new ArrayList<GraphNode>();
+        _forObject = fo;
+        _code = cde;
     }
 
-    public void addGraphNode(GraphNode nde)
+    public void handleException(Throwable e)
     {
-        _nodes.add(nde);
+        if (_exception == null)
+            _exception = new CollectedException(_code, e);
+        else
+            _exception.addException(e);
     }
 
-    public void addDependency(GraphNode parent, GraphNode child)
-    {
-        parent.addDependant(child);
-        child.addDependsOn(parent);
-    }
-
-    public GraphRuntime newRuntime()
+    public void hasException()
         throws CtxException
     {
-        return new GraphRuntime(_nodes);
-    }
-
-    public int graphSize()
-    {
-        return _nodes.size();
-    }
-
-    public List<GraphNode> nodes()
-    {
-        return _nodes;
-    }
-
-    public String toString()
-    {
-        return _nodes.toString();
+        if (_exception != null) except().rt(_forObject, _exception, new CtxException.Context("StandardExceptionHandler", "hasException"));
     }
 }
-
 

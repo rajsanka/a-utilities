@@ -26,66 +26,48 @@
  * ************************************************************
  * HEADERS
  * ************************************************************
- * File:                org.anon.utilities.gconcurrent.Graph
- * Author:              rsankar
+ * File:                org.anon.utilities.exception.CollectedException
+ * Author:              rsankarx
  * Revision:            1.0
- * Date:                16-01-2013
+ * Date:                24-09-2016
  *
  * ************************************************************
  * REVISIONS
  * ************************************************************
- * A graph representation of what should be run
+ * A collection of exceptions collected
  *
  * ************************************************************
  * */
 
-package org.anon.utilities.gconcurrent;
+package org.anon.utilities.exception;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.anon.utilities.exception.CtxException;
-
-public class Graph
+public class CollectedException extends CtxException
 {
-    private List<GraphNode> _nodes;
+    private Collection<CtxException> _collect;
 
-    public Graph()
+    public CollectedException(int cde, Throwable first)
     {
-        _nodes = new ArrayList<GraphNode>();
+        super(cde, first);
+        _collect = new ConcurrentLinkedQueue<CtxException>();
+        addException(first);
     }
 
-    public void addGraphNode(GraphNode nde)
+    public void addException(Throwable e)
     {
-        _nodes.add(nde);
-    }
+        CtxException add = null;
+        if (e instanceof CtxException)
+        {
+            add = (CtxException)e;
+        }
+        else
+        {
+            add = new CtxException(e);
+        }
 
-    public void addDependency(GraphNode parent, GraphNode child)
-    {
-        parent.addDependant(child);
-        child.addDependsOn(parent);
-    }
-
-    public GraphRuntime newRuntime()
-        throws CtxException
-    {
-        return new GraphRuntime(_nodes);
-    }
-
-    public int graphSize()
-    {
-        return _nodes.size();
-    }
-
-    public List<GraphNode> nodes()
-    {
-        return _nodes;
-    }
-
-    public String toString()
-    {
-        return _nodes.toString();
+        _collect.add(add);
     }
 }
-
 

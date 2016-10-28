@@ -45,6 +45,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Date;
 import java.util.Set;
+import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import java.util.UUID;
@@ -112,6 +113,12 @@ public class ConvertService extends ObjectServiceLocator.ObjectService
         {
             e.printStackTrace();
         }
+    }
+
+    public boolean canConvertFromString(Class cls)
+        throws CtxException
+    {
+        return (_strConverters.containsKey(cls));
     }
 
     public <T> T stringToClass(String val, Class<T> cls)
@@ -298,6 +305,26 @@ public class ConvertService extends ObjectServiceLocator.ObjectService
         Object ret = traverse.traverse();
         return clazz.cast(ret);
     }
+
+    public Object listObjectsToMap(Collection val)
+        throws CtxException
+    {
+        List lst = new ArrayList();
+        for (Object val1 : val)
+        {
+            if (type().checkPrimitive(val1.getClass()))
+            {
+                lst.add(val1);
+            }
+            else
+            {
+                Map m = objectToMap(val1);
+                lst.add(m);
+            }
+        }
+
+        return lst;
+    }
     
 
     public Map objectToMap(Object val)
@@ -337,6 +364,27 @@ public class ConvertService extends ObjectServiceLocator.ObjectService
         if (!o.verify())
             except().te(o, "Object cannot be verified");
         return cls.cast(o);
+    }
+
+    //Return test_field if the value passed is testField or _testField etc
+    public String convertFormat(String val)
+    {
+        char[] vbytes = val.toCharArray();
+        char[] changedbytes = new char[vbytes.length * 2];
+        int runningcnt = 0;
+        for (int i = 0; i < vbytes.length; i++)
+        {
+            if (Character.isUpperCase(vbytes[i]))
+                changedbytes[runningcnt++] = '_';
+
+            if (Character.isLetterOrDigit(vbytes[i])) //ignore everything else 
+                changedbytes[runningcnt++] = Character.toLowerCase(vbytes[i]);
+        }
+
+        char[] create = new char[runningcnt];
+        System.arraycopy(changedbytes, 0, create, 0, runningcnt);
+
+        return new String(create);
     }
 
 	

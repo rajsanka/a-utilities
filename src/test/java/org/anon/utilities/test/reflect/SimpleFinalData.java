@@ -1,17 +1,17 @@
 /**
- * Utilities - Utilities used by anon
+ * SMART - State Machine ARchiTecture
  *
  * Copyright (C) 2012 Individual contributors as indicated by
  * the @authors tag
  *
- * This file is a part of Utilities.
+ * This file is a part of SMART.
  *
- * Utilities is a free software: you can redistribute it and/or modify
+ * SMART is a free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Utilities is distributed in the hope that it will be useful,
+ * SMART is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
@@ -26,41 +26,34 @@
  * ************************************************************
  * HEADERS
  * ************************************************************
- * File:                org.anon.utilities.exception.RepeatParms
+ * File:                org.anon.utilities.test.reflect.SimpleFinalData
  * Author:              rsankar
  * Revision:            1.0
- * Date:                06-08-2012
+ * Date:                22-08-2013
  *
  * ************************************************************
  * REVISIONS
  * ************************************************************
- * A set of parameters to be passed for repeating exception
+ * A final data for creating
  *
  * ************************************************************
  * */
 
-package org.anon.utilities.exception;
+package org.anon.utilities.test.reflect;
 
-import org.anon.utilities.utils.RepeaterVariants;
-
-public class RepeatParms implements RepeaterVariants
+public class SimpleFinalData
 {
-    private String _method;
-    private String _message;
-    private Throwable _throwable;
-    private int _code;
+    private final String _test;
+    private final int _try;
+    private final long _ltry;
 
-    public RepeatParms(String mthd, String msg, Throwable t, int code)
+    public SimpleFinalData()
     {
-        _method = mthd;
-        _message = msg;
-        _throwable = t;
-        _code = code;
+        _test = "";
+        _try = 0;
+        _ltry = 1;
     }
 
-    public String method() { return _method; }
-    public String message() { return _message; }
-    public Throwable throwable() { return _throwable; }
-    public int code() { return _code; }
+    public String toString() { return _test + ":" + _try + ":" + _ltry; }
 }
 

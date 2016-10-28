@@ -109,6 +109,12 @@ public class ClassTraversal implements Traversal
     }
     */
 
+    public Object traverse(boolean modify)
+        throws CtxException
+    {
+        return traverse(_context, _visitor, null, modify);
+    }
+
     public Object traverse()
         throws CtxException
     {
@@ -132,7 +138,7 @@ public class ClassTraversal implements Traversal
         Object obj = null;
         obj = visit.visit(ctx);
         if ((visitor != null) && (obj != null))
-            obj = visitor.visit(this, ctx, visit, true, null);
+            obj = visitor.visit(this, ctx, visit, modify, null);
 
         if (modify && (obj != null))
             ctx.modify(obj);

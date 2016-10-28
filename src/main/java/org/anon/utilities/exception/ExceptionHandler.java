@@ -26,66 +26,24 @@
  * ************************************************************
  * HEADERS
  * ************************************************************
- * File:                org.anon.utilities.gconcurrent.Graph
- * Author:              rsankar
+ * File:                org.anon.utilities.exception.ExceptionHandler
+ * Author:              rsankarx
  * Revision:            1.0
- * Date:                16-01-2013
+ * Date:                16-09-2016
  *
  * ************************************************************
  * REVISIONS
  * ************************************************************
- * A graph representation of what should be run
+ * A functional handler for forked tasks
  *
  * ************************************************************
  * */
 
-package org.anon.utilities.gconcurrent;
+package org.anon.utilities.exception;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import org.anon.utilities.exception.CtxException;
-
-public class Graph
+@FunctionalInterface
+public interface ExceptionHandler
 {
-    private List<GraphNode> _nodes;
-
-    public Graph()
-    {
-        _nodes = new ArrayList<GraphNode>();
-    }
-
-    public void addGraphNode(GraphNode nde)
-    {
-        _nodes.add(nde);
-    }
-
-    public void addDependency(GraphNode parent, GraphNode child)
-    {
-        parent.addDependant(child);
-        child.addDependsOn(parent);
-    }
-
-    public GraphRuntime newRuntime()
-        throws CtxException
-    {
-        return new GraphRuntime(_nodes);
-    }
-
-    public int graphSize()
-    {
-        return _nodes.size();
-    }
-
-    public List<GraphNode> nodes()
-    {
-        return _nodes;
-    }
-
-    public String toString()
-    {
-        return _nodes.toString();
-    }
+    public void handleException(Throwable t);
 }
-
 

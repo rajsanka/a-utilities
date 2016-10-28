@@ -1,17 +1,17 @@
 /**
- * Utilities - Utilities used by anon
+ * SMART - State Machine ARchiTecture
  *
  * Copyright (C) 2012 Individual contributors as indicated by
  * the @authors tag
  *
- * This file is a part of Utilities.
+ * This file is a part of SMART.
  *
- * Utilities is a free software: you can redistribute it and/or modify
+ * SMART is a free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Utilities is distributed in the hope that it will be useful,
+ * SMART is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
@@ -26,41 +26,37 @@
  * ************************************************************
  * HEADERS
  * ************************************************************
- * File:                org.anon.utilities.exception.RepeatParms
+ * File:                org.anon.utilities.test.reflect.DataLegend
  * Author:              rsankar
  * Revision:            1.0
- * Date:                06-08-2012
+ * Date:                27-08-2013
  *
  * ************************************************************
  * REVISIONS
  * ************************************************************
- * A set of parameters to be passed for repeating exception
+ * A legend to be embedded in smat object
  *
  * ************************************************************
  * */
 
-package org.anon.utilities.exception;
+package org.anon.utilities.test.reflect;
 
-import org.anon.utilities.utils.RepeaterVariants;
+import java.util.UUID;
 
-public class RepeatParms implements RepeaterVariants
+public class DataLegend implements java.io.Serializable
 {
-    private String _method;
-    private String _message;
-    private Throwable _throwable;
-    private int _code;
+    private UUID _id;
+    private String _group;
+    private long _createdOn;
+    private long _lastModifiedOn;
+    private String _ownedBy;
+    private String _lastModifiedBy;
 
-    public RepeatParms(String mthd, String msg, Throwable t, int code)
+    public DataLegend()
     {
-        _method = mthd;
-        _message = msg;
-        _throwable = t;
-        _code = code;
+        _id = UUID.randomUUID();
+        _createdOn = System.currentTimeMillis();
+        _lastModifiedOn = System.currentTimeMillis();
     }
-
-    public String method() { return _method; }
-    public String message() { return _message; }
-    public Throwable throwable() { return _throwable; }
-    public int code() { return _code; }
 }
 
