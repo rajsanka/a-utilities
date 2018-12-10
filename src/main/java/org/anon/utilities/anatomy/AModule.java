@@ -79,6 +79,12 @@ public abstract class AModule implements Repeatable
     {
     }
 
+    protected void setup(StartConfig config) 
+        throws CtxException 
+    {
+        _context.setup(config);
+    }
+
     public void start(StartConfig config)
         throws CtxException
     {

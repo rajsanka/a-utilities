@@ -452,5 +452,26 @@ public class ReflectionService extends ServiceLocator.Service
         return ret;
     }
 
+    public void setAnyFieldValueWithPath(Class cls, Object obj, String path, Object val)
+        throws CtxException
+    {
+        String[] tokens = path.split("\\.");
+        Class lookin = cls;
+        Object olookin = obj;
+        Object ret = null;
+        for (int i = 0; i < (tokens.length - 1); i++)
+        {
+            Object fobj = getAnyFieldValue(lookin, olookin, tokens[i]);
+            if (fobj != null)
+            {
+                lookin = fobj.getClass();
+                olookin = fobj;
+            }
+            ret = fobj;
+        }
+
+        if (olookin != null) setAnyFieldValue(lookin, olookin, tokens[tokens.length - 1], val);
+    }
+
 }
 

@@ -172,6 +172,13 @@ public class Anatomy
         {
             AModule mod = module(order[i]);
             if (mod != null)
+                mod.setup(config);
+        }
+
+        for (int i = 0; i < order.length; i++)
+        {
+            AModule mod = module(order[i]);
+            if (mod != null)
                 mod.start(config);
         }
     }
@@ -182,6 +189,14 @@ public class Anatomy
         AModule mod = rootModule();
         if (mod != null)
         {
+            mod.setup(config);
+            while (mod.child() != null)
+            {
+                mod = mod.child();
+                mod.setup(config);
+            }
+
+            mod = rootModule();
             mod.start(config);
             while (mod.child() != null)
             {

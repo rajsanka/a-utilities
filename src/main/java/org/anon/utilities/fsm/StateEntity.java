@@ -48,7 +48,8 @@ public interface StateEntity
     public String utilities___stateEntityType();
 
     public void utilities___setCurrentState(FiniteState state);
-    public FiniteState utilities___currentState();
+    public FiniteState utilities___currentState()
+        throws CtxException;
 
     public StateEntity utilities___parent()
         throws CtxException;

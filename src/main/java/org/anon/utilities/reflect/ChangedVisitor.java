@@ -132,7 +132,7 @@ public class ChangedVisitor implements TVisitor
                 {
                     String path = ctx.fieldpath();
                     DirtyField dfld = getDirtyField(path, _dirty);
-                    //System.out.println(this + ": Got DirtyField for: " + path + ":" + dfld + ":" + _dirty);
+                    System.out.println(this + ": Got DirtyField for: " + path + ":" + dfld + ":" + _dirty);
                     assertion().assertNotNull(dfld, "Parent should have been dirty??");
                     List<DirtyField> sflds = dfld.getSubFields();
                     if (sflds == null)

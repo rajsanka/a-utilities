@@ -112,5 +112,13 @@ public class FiniteStateMachine
         boolean ret = ((state != null) && (state.finalState()));
         return ret;
     }
+
+    public FiniteState state(String name)
+        throws CtxException
+    {
+        FiniteStateGraph graph = _states.get(name);
+        assertion().assertNotNull(graph, "Not a valid state: " + name);
+        return graph.state();
+    }
 }
 

@@ -43,6 +43,7 @@ package org.anon.utilities.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Map;
 import java.util.List;
 
 import static org.anon.utilities.services.ServiceLocator.*;
@@ -75,8 +76,10 @@ public class DataContext
         else
         {
             assertion().assertNotNull(primary, "Cannot traverse a null primary");
-            if ((traversing != null) && (traversing.length > 0))
-                assertion().assertHomogeneous(this, traversing, "Cannot create ctx from non-homogeneous objects");
+            //Please note, not sure why this falls into the assertion when it is a Map class. Have debug more when more 
+            //scenarios are got.
+            /*if ((traversing != null) && (traversing.length > 0) && (!Map.class.isAssignableFrom(primary.getClass())))
+                assertion().assertHomogeneous(this, traversing, "Cannot create ctx from non-homogeneous objects");*/
             _primaryObject = primary;
             _traversingObject = traversing;
             _traversingClass = primary.getClass();

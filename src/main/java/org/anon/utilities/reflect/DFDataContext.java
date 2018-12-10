@@ -43,11 +43,14 @@ package org.anon.utilities.reflect;
 
 import java.util.Map;
 import java.util.List;
+import java.util.Collection;
 import java.util.HashMap;
 import java.lang.reflect.Field;
 
 import org.anon.utilities.serialize.srdr.DirtyField;
 import org.anon.utilities.exception.CtxException;
+
+import static org.anon.utilities.services.ServiceLocator.*;
 
 public class DFDataContext extends DataContext
 {
@@ -88,7 +91,7 @@ public class DFDataContext extends DataContext
     @Override
     public boolean shouldTraverse(Field fld)
     {
-        if (_dirtyFields.containsKey(fld.getName()))
+        if (_dirtyFields.containsKey(fld.getName())) // && (!type().isAssignable(fld.getType(), Collection.class)) && (!type().isAssignable(fld.getType(), Map.class)))
             return true;
 
         return false;

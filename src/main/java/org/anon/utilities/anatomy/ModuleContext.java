@@ -47,5 +47,8 @@ public interface ModuleContext
 {
     public JVMEnvironment vmEnvironment()
         throws CtxException;
+
+    public void setup(StartConfig cfg) 
+        throws CtxException;
 }
 
